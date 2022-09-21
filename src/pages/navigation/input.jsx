@@ -1,15 +1,15 @@
 import React from 'react'
 
-const input = ({ label, error, ...props}) => {
+const Input = React.forwardRef(({label, error, ...props}, ref) => {
   return (
     <div className='form-group'>
         <label>
             <span>{label}</span>
-            <input className='form-control'/>
+            <input className='form-control' {...props} ref={ref}/>
         </label>
         <p className='text-danger fw-bold'>{error}</p>                    
     </div>  
   )
-}
+})
 
-export default input
+export default Input
