@@ -11,6 +11,7 @@
 .maps {
     background-color: azure;
     border-radius: 10px;
+    min-height: 10rem;
 }
 
 .content {
@@ -19,11 +20,11 @@
     align-items: center;
     justify-content: space-between;
     color: azure;
-    padding: 2rem 0;
+    padding: 2rem 2rem 0 2rem;
 }
 
-.information {
-    width: 300px;
+.content form {
+    width: 100%;
 }
 
 .text {
@@ -33,14 +34,12 @@
 }
 
 .price {
-    width: 300px;
     align-self: flex-end;
 }
 
-.rate {
-    width: 300px;
+.rate{
+    width: 100%;
 }
-
 .rate > p:nth-child(2){
     font-size: .9rem;
 }

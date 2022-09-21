@@ -35,10 +35,10 @@ const Navigation = () => {
 
     return (
         <main className="row container-navigation">
-            <div className="col-8 maps"></div>
-            <div className="col-4 content">
+            <div className="col-12 col-md-8 maps"></div>
+            <div className="col-12 col-md-4 content">
                 <form action="" onSubmit={handleSubmit(onSubmit)}>
-                <Input label="Place of departure" {...register("departure")} error={errors.departure?.message}/>
+                    <Input label="Place of departure" {...register("departure")} error={errors.departure?.message}/>
                     <Input label="Choose your destination"  {...register("destination")} error={errors.destination?.message}/>
                     <div className="information">
                         <p className="text">Distance: {information.distance} Km</p>
