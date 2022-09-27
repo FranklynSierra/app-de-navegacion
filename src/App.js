@@ -1,14 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter,Route,Routes}from 'react-router-dom'
 import { Main } from './pages/Main';
-
+import Register from './pages/form/register';
+import Login from './pages/form/login';
+import Navigation from './pages/navigation/navigation';
 function App() {
   
   
   return (
-   <>
-      <Main/>
-   </>
+
+    <BrowserRouter>
+      <Routes>
+
+       <Route path='/'element={<Main/>}></Route>
+       <Route path='/register'element={<Register/>}></Route>
+       <Route path='/login'element={<Login/>}></Route>
+       <Route path='/navigate'element={<Navigation/>}></Route>
+      </Routes>
+  
+  </BrowserRouter>
   );
 }
 

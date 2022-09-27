@@ -1,28 +1,30 @@
 import React from 'react'
+import { Link} from 'react-router-dom';
 
 export const NavBar = () => {
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
     <div className="container-fluid">
-      <a className="navbar-brand" href="#">Pirate TRIP</a>
+    <Link  to='/'> Pirate TRIP</Link>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarText">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <a className="nav-link active" aria-current="page" href="#">Inicio</a>
+            <Link  className="nav-link" to='/'>Inicio</Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Porque Elejirnos</a>
+           <Link to='/' className="nav-link">Porque Elejirnos</Link> 
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Mas opciones</a>
+           <Link className="nav-link" to='/'> Mas opciones</Link>
           </li>
         </ul>
         <from className="d-flex">
-          <button className="btn btn-outline-success">Login</button>          
-          <button className="btn btn-outline-success">registro</button>
+        <Link to='/login'> <button className="btn btn-outline-success">Login</button> </Link>          
+        <Link to='/register'> <button className="btn btn-outline-success">registro</button></Link> 
         </from>
       </div>
     </div>
