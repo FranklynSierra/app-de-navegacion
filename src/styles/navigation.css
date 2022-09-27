@@ -1,0 +1,46 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.container-navigation {
+    margin: 0;
+    width: 100%;
+    height: calc(100vh - 56px);
+    padding: 4rem;
+    box-sizing: border-box;
+    background-color: var( --background-color, #161717 );
+}
+
+.maps {
+    background-color: azure;
+    border-radius: 10px;
+    min-height: 10rem;
+}
+
+.content {
+    display: flex;    
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: azure;
+    padding: 2rem 2rem 0 2rem;
+}
+
+.content form {
+    width: 100%;
+}
+
+.text {
+    text-align: left;
+    margin-bottom: .2rem;
+    font-size: 14pt;
+}
+
+.price {
+    align-self: flex-end;
+}
+
+.rate{
+    width: 100%;
+}
+.rate > p:nth-child(2){
+    font-size: .9rem;
+}
