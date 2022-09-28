@@ -99,7 +99,10 @@ function Register() {
           </div>
          
           <p>{formErrors.password}</p>
-          <button className="btn btn-outline-success btn-block">Submit</button>
+          <div className="d-grid w-100 mb-3">
+            <button className="btn btn-outline-success btn-block">Submit</button>
+          </div>
+          
         </div>
         </div>
       </form>
