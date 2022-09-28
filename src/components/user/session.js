@@ -8,7 +8,7 @@ const session = ({ user }) => {
     return (
         <li className="nav-item d-flex align-items-center text-light fw-bold">
         <span className="me-2">Bienvenido {user}</span>
-        <button type="button" class="btn btn-dark" onClick={handleLogout}>
+        <button type="button" className="btn btn-dark" onClick={handleLogout}>
             <svg                
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
