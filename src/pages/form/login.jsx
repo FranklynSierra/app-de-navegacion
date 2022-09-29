@@ -21,9 +21,8 @@ function Login() {
   };
 
   useEffect(() => {
-    console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
+       // TODO Submit
     }
   }, [formErrors]);
   const validate = (values) => {
@@ -94,12 +93,15 @@ function Login() {
               name="password"
               placeholder="Password"
               value={formValues.password}
-              onChange={handleChange}
+              onChange={handleChange} 
             />
           </div>
          
           <p>{formErrors.password}</p>
-          <button className="btn btn-outline-success btn-block">Submit</button>
+          <div className="d-grid w-100 mb-3">
+            <button className="btn btn-outline-success btn-block">Submit</button>
+          </div>
+         
         </div>
         </div>
       </form>

@@ -6,7 +6,7 @@ export const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
     <div className="container-fluid">
-    <Link  to='/'> Pirate TRIP</Link>
+    <Link  to='/' className='navbar-brand'> Pirate TRIP</Link>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
@@ -22,10 +22,10 @@ export const NavBar = () => {
            <Link className="nav-link" to='/'> Mas opciones</Link>
           </li>
         </ul>
-        <from className="d-flex">
-        <Link to='/login'> <button className="btn btn-outline-success">Login</button> </Link>          
+        <div className="d-flex">
+        <Link to='/login' className='me-2'> <button className="btn btn-outline-success">Login</button> </Link>          
         <Link to='/register'> <button className="btn btn-outline-success">registro</button></Link> 
-        </from>
+        </div>
       </div>
     </div>
   </nav>
