@@ -71,7 +71,7 @@ window.initMap = initMap;
 
 /*
 identificador del mapa
- <div id="mapa"></div>
+ <div id="map"></div>
 
   Este script en el index.html de public
     <script async
