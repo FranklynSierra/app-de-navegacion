@@ -2,12 +2,12 @@ import "../../styles/navigation.css";
 import "../../styles/input.css";
 import React, { useEffect, useState } from "react";
 import Input from "./input";
-import Navbar from "../../components/common/navbar";
+import { NavBar } from "../../components/NavBar/NavBar";
 import Session from "../../components/user/session";
 import { useForm  } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-
+import '../../components/maps/index.ts'
 const schema = yup.object({
     departure: yup.string().required("Departure is required"),
     destination: yup.string().required("Destination is required"),
@@ -37,11 +37,13 @@ const Navigation = () => {
 
     return (
         <>
-            <Navbar>
+            <NavBar>
                 <Session user={"Cristhian Perez"}/>
-            </Navbar>
+            </NavBar>
             <main className="row container-navigation">
-                <div className="col-12 col-md-8 maps"></div>
+                <div className="col-12 col-md-8 map" id="map" >
+                   
+                </div>
                 <div className="col-12 col-md-4 content">
                     <form action="" onSubmit={handleSubmit(onSubmit)}>
                         <Input label="Place of departure" {...register("departure")} error={errors.departure?.message}/>
