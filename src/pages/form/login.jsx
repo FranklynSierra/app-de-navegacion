@@ -1,30 +1,60 @@
-import { useState, useEffect } from "react";
+
 import { NavBar } from "../../components/NavBar/NavBar";
 import '../../styles/form.css'
-
-
+import { useRef, useState, useEffect, useContext } from 'react';
+import {useNavigate, useLocation, Link} from 'react-router-dom';
+import useAuth from "../../hooks/useAuth";
 function Login() {
+  //const { setAuth,persist,setPersist } = useAuth()
+  const navigate=useNavigate()
+  const location=useLocation()
+
+  const userRef = useRef();
+  const errRef = useRef();
   const initialValues = { Name: "",Lastname:"" , email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-
+  const [errMsg, setErrMsg] = useState('');
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    try {
+      // const response = await axios.post(LOGIN_URL,
+      //     JSON.stringify({ username, password }),
+      //     {
+      //         headers: { 'Content-Type': 'application/json' },
+      //         withCredentials: true
+      //     }
+      // );
+    
+    //  const accessToken = response?.data?.accessToken;
+      // setAuth({  Name,  password, accessToken });
+      // localStorage.setItem("access", accessToken);
+      // setUser('');
+      // setPwd('');
+      // navigate(from,{replace:true})
+  } catch (err) {
+      if (!err?.response) {
+          setErrMsg('No Server Response');
+      } else if (err.response?.status === 400) {
+          setErrMsg('Missing Username or Password');
+      } else if (err.response?.status === 401) {
+          setErrMsg('Unauthorized');
+      } else {
+          setErrMsg('Login Failed');
+      }
+      errRef.current.focus();
+  }
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-       // TODO Submit
-    }
-  }, [formErrors]);
+
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
