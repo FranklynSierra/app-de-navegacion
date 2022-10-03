@@ -5,6 +5,7 @@ import { Main } from './pages/Main';
 import Register from './pages/form/register';
 import Login from './pages/form/login';
 import Navigation from './pages/navigation/navigation';
+import PageNotFound from './pages/404/pageNotFound';
 function App() {
   
   
@@ -17,6 +18,7 @@ function App() {
        <Route path='/register'element={<Register/>}></Route>
        <Route path='/login'element={<Login/>}></Route>
        <Route path='/navigate'element={<Navigation/>}></Route>
+       <Route path='*'element={<PageNotFound/>}></Route>
       </Routes>
   
   </BrowserRouter>
