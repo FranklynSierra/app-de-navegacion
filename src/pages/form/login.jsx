@@ -11,7 +11,7 @@ function Login() {
 
   const userRef = useRef();
   const errRef = useRef();
-  const initialValues = { Name: "",Lastname:"" , email: "", password: "" };
+  const initialValues = { Name: "" , email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
