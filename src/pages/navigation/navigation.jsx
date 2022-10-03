@@ -21,6 +21,7 @@ const Navigation = () => {
     const mapRef = useRef(null)
     const origenRef = useRef(null)
     const destineRef = useRef(null)
+    const modeSelectorRef = useRef(null)
 
     const [information, setInformation] = useState({distance: "0",rate: "0"})
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
@@ -36,21 +37,22 @@ const Navigation = () => {
       }, [watch]);
     
     useEffect(()=> {
-        let inputs = [origenRef, destineRef]
+        const inputsRef = [origenRef, destineRef]
         loader
         .load()
         .then((google) => {
-            initMap(google, mapRef, inputs)
+            initMap(google, {mapRef, inputsRef, modeSelectorRef})
         })
         .catch(e => {
           console.log(e)
         });
 
     }, [])
+
+
     const onSubmit = (data) => {
         //TODO send
     }
-
 
     return (
         <>
@@ -64,6 +66,20 @@ const Navigation = () => {
                     <form action="" onSubmit={handleSubmit(onSubmit)}>
                         <Input label="Place of departure" ref={origenRef}/>
                         <Input label="Choose your destination"  ref={destineRef} />
+                        <div id="mode-selector" ref={modeSelectorRef} className="card p-1 pe-2">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="type" id="changemode-driving"  defaultChecked="checked"/>
+                                <label className="form-check-label text-dark" htmlFor="changemode-driving">Driving</label>
+                            </div>                                                       
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="type" id="changemode-walking"/>
+                                <label className="form-check-label text-dark" htmlFor="changemode-walking">Walking</label>
+                            </div>                                                       
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="type" id="changemode-transit"/>
+                                <label className="form-check-label text-dark" htmlFor="changemode-transit">Transit</label>
+                            </div>                                                       
+                        </div>
                         <div className="information">
                             <p className="text">Distance: {information.distance} Km</p>
                             <p className="text">Rate: {information.rate} $</p>

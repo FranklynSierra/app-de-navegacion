@@ -8,13 +8,13 @@ export const loader = new Loader({
 
 let marker, map;
 
-function initMap(google, mapRef, inputs) {
+function initMap(google, ref) {
   const posicion = {
     lat: 10.159585,
     lng: -67.729032,
   };
 
-  map = new google.maps.Map(mapRef.current, {
+  map = new google.maps.Map(ref.mapRef.current, {
     zoom: 16,
     center: posicion,
   });
@@ -39,20 +39,21 @@ function initMap(google, mapRef, inputs) {
   }
 
   function centraMapa(position) {
+    //console.log("position",position)
     const nuevaPos = {
       lat: position.coords.latitude,
       lng: position.coords.longitude,
     };
-    console.log(nuevaPos);
+    //console.log("position new",nuevaPos);
     marker.setPosition(nuevaPos);
     map.setCenter(nuevaPos);
   }
 
-  new AutocompleteDirectionsHandler(map, google, inputs);
+  new AutocompleteDirectionsHandler(map, google, ref);
 }
 
 class AutocompleteDirectionsHandler {
-  constructor(map, google, inputs) {
+  constructor(map, google, ref) {
     this.map = map;
     this.originPlaceId = "";
     this.destinationPlaceId = "";
@@ -61,11 +62,14 @@ class AutocompleteDirectionsHandler {
     this.directionsRenderer = new google.maps.DirectionsRenderer();
     this.directionsRenderer.setMap(map);
 
-    const originInput = inputs[0].current;
-    const destinationInput = inputs[1].current;
+    const {inputsRef, modeSelectorRef} = ref
+
+    const originInput = inputsRef[0].current;
+    const destinationInput = inputsRef[1].current;
+    const modeSelector = modeSelectorRef.current;
     //const originInput = document.getElementById("origen-input");
     //const destinationInput = document.getElementById("destination-input");
-    const modeSelector = document.getElementById("mode-selector");
+    //const modeSelector = document.getElementById("mode-selector");
 
     // Specify just the place data fields that you need.
     const originAutocomplete = new google.maps.places.Autocomplete(
@@ -79,33 +83,31 @@ class AutocompleteDirectionsHandler {
       { fields: ["place_id"] }
     );
 
-    this.setupClickListener(
-      "changemode-walking",
-      google.maps.TravelMode.WALKING
-    );
-    this.setupClickListener(
-      "changemode-transit",
-      google.maps.TravelMode.TRANSIT
-    );
-    this.setupClickListener(
-      "changemode-driving",
-      google.maps.TravelMode.DRIVING
-    );
+
 
     this.setupPlaceChangedListener(originAutocomplete, "ORIG");
+
     this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
 
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
-      destinationInput
-    );
+    //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+    //this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(destinationInput);
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+
+    this.setupClickListener("changemode-walking", google.maps.TravelMode.WALKING);
+    
+    this.setupClickListener("changemode-transit",google.maps.TravelMode.TRANSIT);
+    
+    this.setupClickListener("changemode-driving", google.maps.TravelMode.DRIVING); 
   }
 
   setupClickListener(id, mode) {
     const radioButton = document.getElementById(id);
+    console.log("radio", radioButton)
+    if(!radioButton){ return;}
+   
 
     radioButton.addEventListener("click", () => {
+      console.log(mode)
       this.travelMode = mode;
       this.route();
     });
@@ -134,6 +136,7 @@ class AutocompleteDirectionsHandler {
 
   route() {
     if (!this.originPlaceId || !this.destinationPlaceId) {
+      console.log("no valid ruta", this.originPlaceId, this.destinationPlaceId)
       return;
     }
 
@@ -160,7 +163,6 @@ export default initMap;
 /*
 identificador del mapa
  <div id="map"></div>
-
   Este script en el index.html de public
     <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCoPiXZdDvICYe7B9IdOCaHzhO6ecTlErw&callback=initMap">
