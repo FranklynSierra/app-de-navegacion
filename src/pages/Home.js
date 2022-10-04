@@ -1,6 +1,7 @@
 import React from 'react'
 import fondo from "./fondo.png"
 import "../styles/general.css"
+import { Link } from 'react-router-dom'
 
 export const Home = () => {
     return (
@@ -12,7 +13,7 @@ export const Home = () => {
         </div>
         <div className='buttons-home'>
           <button type='button' className='btn btn-danger button-home'>conductor</button>
-          <button type='button' className='btn btn-success button-home'>cliente</button>          
+          <Link to={'/navigate'} className='btn btn-success button-home'>cliente</Link>          
         </div>
       </div>    
     </>

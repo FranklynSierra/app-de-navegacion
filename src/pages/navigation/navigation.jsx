@@ -1,13 +1,15 @@
 import "../../styles/navigation.css";
 import "../../styles/input.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "./input";
 import { NavBar } from "../../components/NavBar/NavBar";
 import Session from "../../components/user/session";
 import { useForm  } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import '../../components/maps/index.ts'
+import initMap, {loader} from "../../components/maps/mapa2";
+
+//import '../../components/maps/index.ts'
 const schema = yup.object({
     departure: yup.string().required("Departure is required"),
     destination: yup.string().required("Destination is required"),
@@ -16,6 +18,10 @@ const schema = yup.object({
 const rateDefault = 0.75;  
 
 const Navigation = () => {
+    const mapRef = useRef(null)
+    const origenRef = useRef(null)
+    const destineRef = useRef(null)
+    const modeSelectorRef = useRef(null)
 
     const [information, setInformation] = useState({distance: "0",rate: "0"})
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
@@ -30,10 +36,23 @@ const Navigation = () => {
         return () => subscription.unsubscribe();
       }, [watch]);
     
+    useEffect(()=> {
+        const inputsRef = [origenRef, destineRef]
+        loader
+        .load()
+        .then((google) => {
+            initMap(google, {mapRef, inputsRef, modeSelectorRef})
+        })
+        .catch(e => {
+          console.log(e)
+        });
+
+    }, [])
+
+
     const onSubmit = (data) => {
         //TODO send
     }
-
 
     return (
         <>
@@ -41,13 +60,26 @@ const Navigation = () => {
                 <Session user={"Cristhian Perez"}/>
             </NavBar>
             <main className="row container-navigation">
-                <div className="col-12 col-md-8 map" id="map" >
-                   
+                <div className="col-12 col-md-8 map" id="map" ref={mapRef}>
                 </div>
                 <div className="col-12 col-md-4 content">
                     <form action="" onSubmit={handleSubmit(onSubmit)}>
-                        <Input label="Place of departure" {...register("departure")} error={errors.departure?.message}/>
-                        <Input label="Choose your destination"  {...register("destination")} error={errors.destination?.message}/>
+                        <Input label="Place of departure" ref={origenRef}/>
+                        <Input label="Choose your destination"  ref={destineRef} />
+                        <div id="mode-selector" ref={modeSelectorRef} className="card p-1 pe-2">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="type" id="changemode-driving"  defaultChecked="checked"/>
+                                <label className="form-check-label text-dark" htmlFor="changemode-driving">Driving</label>
+                            </div>                                                       
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="type" id="changemode-walking"/>
+                                <label className="form-check-label text-dark" htmlFor="changemode-walking">Walking</label>
+                            </div>                                                       
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" name="type" id="changemode-transit"/>
+                                <label className="form-check-label text-dark" htmlFor="changemode-transit">Transit</label>
+                            </div>                                                       
+                        </div>
                         <div className="information">
                             <p className="text">Distance: {information.distance} Km</p>
                             <p className="text">Rate: {information.rate} $</p>

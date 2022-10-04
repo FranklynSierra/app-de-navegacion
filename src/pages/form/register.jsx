@@ -1,58 +1,88 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { NavBar } from "../../components/NavBar/NavBar";
 import '../../styles/form.css'
+import { useNavigate ,Link} from "react-router-dom";
 
-
+import axios from "axios";
 function Register() {
-  const initialValues = { Name: "",Lastname:"" , email: "", password: "" };
-  const [formValues, setFormValues] = useState(initialValues);
+  const LOGIN_URL = '/auth/login';
+  const [user, setUser] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const [formValues, setFormValues] = useState(user,email,password);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const userRef = useRef();
+  const errRef = useRef();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
+  const  navigate=useNavigate()
+  const handleSubmit = async(e) => {
     e.preventDefault();
+  //   try {
+  //     const response = await axios.post(LOGIN_URL,
+  //         JSON.stringify({ formValues }),
+  //         {
+  //             headers: { 'Content-Type': 'application/json' },
+  //             withCredentials: true
+  //         }
+  //     );
+  //     console.log(JSON.stringify(response?.data));
+  //     //console.log(JSON.stringify(response));
+     
+  //     // setAuth({ formValues });
+  //     setUser('');
+  //     setPassword('');
+  //     setEmail('');
+  //     navigate('/navigate');
+  // } catch (err) {
+  //     if (!err?.response) {
+  //         setErrMsg('No Server Response');
+  //     } else if (err.response?.status === 400) {
+  //         setErrMsg('Missing Username or Password');
+  //     } else if (err.response?.status === 401) {
+  //         setErrMsg('Unauthorized');
+  //     } else {
+  //         setErrMsg('Login Failed');
+  //     }
+  //     errRef.current.focus();
+  // }
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
+ 
 
   useEffect(() => {
-    
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      // TODO Submit
+       // TODO Submit
     }
   }, [formErrors]);
-  const validate = (values) => {
+  
+  const validate = () => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.Name) {
-      errors.Name = "Name is required!";
-    }
-    if (!values.Lastname) {
-        errors.Lastname = "lastName is required!";
-      }
-    if (!values.email) {
+    if (!user) {
+      errors.user= "Name is required!";
+    } if (!email) {
       errors.email = "Email is required!";
-    } else if (!regex.test(values.email)) {
+    } else if (!regex.test(email)) {
       errors.email = "This is not a valid email format!";
     }
-    if (!values.password) {
+    if (!password) {
       errors.password = "Password is required";
-    } else if (values.password.length < 4) {
+
+    } else if (password.length < 4) {
       errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
+    } else if (password.length > 10) {
       errors.password = "Password cannot exceed more than 10 characters";
     }
     return errors;
+
   };
 
   return (
     <>
-     <NavBar></NavBar>
+    <NavBar></NavBar>
     <div className="container">
   
       <form onSubmit={handleSubmit}>
@@ -68,11 +98,11 @@ function Register() {
               type="text"
               name="Name"
               placeholder="Name"
-              value={formValues.Name}
-              onChange={handleChange}
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
             />
           </div>
-          <p>{formErrors.Name}</p>
+          <p>{formErrors.user}</p>
           
           <div className="field">
             <label>Email</label>
@@ -81,8 +111,8 @@ function Register() {
               type="text"
               name="email"
               placeholder="Email"
-              value={formValues.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <p>{formErrors.email}</p>
@@ -93,8 +123,8 @@ function Register() {
               type="password"
               name="password"
               placeholder="Password"
-              value={formValues.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
          
@@ -102,10 +132,18 @@ function Register() {
           <div className="d-grid w-100 mb-3">
             <button className="btn btn-outline-success btn-block">Submit</button>
           </div>
-          
+         
         </div>
+
         </div>
       </form>
+      <p>
+        ¿you need login?<br />
+            <span className="line">
+             {/*put router link here*/}
+                <Link to='/login'>Login</Link>
+               </span>
+          </p>
     </div>
     </>
   );
