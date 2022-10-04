@@ -3,9 +3,9 @@ import { NavBar } from "../../components/NavBar/NavBar";
 import '../../styles/form.css'
 import { useNavigate ,Link} from "react-router-dom";
 
-import axios from "axios";
+
 function Login() {
-  const LOGIN_URL = '/auth/login';
+  const LOGIN_URL = '/http://127.0.0.1:8000/';
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,34 +19,35 @@ function Login() {
   const  navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
-  //   try {
-  //     const response = await axios.post(LOGIN_URL,
-  //         JSON.stringify({ formValues }),
-  //         {
-  //             headers: { 'Content-Type': 'application/json' },
-  //             withCredentials: true
-  //         }
-  //     );
-  //     console.log(JSON.stringify(response?.data));
-  //     //console.log(JSON.stringify(response));
+    try {
+      const response = await LOGIN_URL.post('/api/login',
+          JSON.stringify({ formValues }),
+          {
+              headers: { 'Content-Type': 'application/json' },
+              withCredentials: true
+          }
+      );
+      console.log(JSON.stringify(response?.data));
+      //console.log(JSON.stringify(response));
      
-  //     // setAuth({ formValues });
-  //     setUser('');
-  //     setPassword('');
-  //     setEmail('');
-  //     navigate('/navigate');
-  // } catch (err) {
-  //     if (!err?.response) {
-  //         setErrMsg('No Server Response');
-  //     } else if (err.response?.status === 400) {
-  //         setErrMsg('Missing Username or Password');
-  //     } else if (err.response?.status === 401) {
-  //         setErrMsg('Unauthorized');
-  //     } else {
-  //         setErrMsg('Login Failed');
-  //     }
-  //     errRef.current.focus();
-  // }
+      // setAuth({ formValues });
+      setUser('');
+      setPassword('');
+      setEmail('');
+      navigate('/navigate');
+  } catch (err) {
+      if (!err?.response) {
+          setErrMsg('No Server Response');
+      } else if (err.response?.status === 400) {
+          setErrMsg('Missing Username or Password');
+      } else if (err.response?.status === 401) {
+          setErrMsg('Unauthorized');
+      } else {
+          setErrMsg('Login Failed');
+      }
+      // errRef.current.focus();
+  }
+
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
