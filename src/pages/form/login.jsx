@@ -11,14 +11,14 @@ function Login() {
 
   const userRef = useRef();
   const errRef = useRef();
-  const initialValues = { Name: "" , email: "", password: "" };
+  const initialValues = { username: "" , email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    const { username, value } = e.target;
+    setFormValues({ ...formValues, [username]: value });
   };
 
   const handleSubmit = async(e) => {
@@ -58,12 +58,10 @@ function Login() {
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.Name) {
-      errors.Name = "Name is required!";
+    if (!values.username) {
+      errors.username = "Name is required!";
     }
-    if (!values.Lastname) {
-        errors.Lastname = "lastName is required!";
-      }
+
     if (!values.email) {
       errors.email = "Email is required!";
     } else if (!regex.test(values.email)) {
@@ -97,11 +95,11 @@ function Login() {
               type="text"
               name="Name"
               placeholder="Name"
-              value={formValues.Name}
+              value={formValues.username}
               onChange={handleChange}
             />
           </div>
-          <p>{formErrors.Name}</p>
+          <p>{formErrors.username}</p>
           
           <div className="field">
             <label>Email</label>

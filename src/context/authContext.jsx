@@ -7,6 +7,11 @@ const API_URL = '';
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+
+    const [currentUser, setCurrentUser] = useState()
+    function resetPassword(email) {
+       
+      }
     const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('persist')) || false);
     const [ auth, setAuth ] = useState({});
     const [ persist, setPersist ] = useState(JSON.parse(localStorage.getItem('persist')) || false);
@@ -75,7 +80,7 @@ export const AuthProvider = ({ children }) => {
       }  
     }
     return (
-        <AuthContext.Provider value={{ auth, setAuth,persist,setPersist, loginUser, user, logoutUser, backupUser, fetchRefreshToken }}>
+        <AuthContext.Provider value={{ resetPassword, auth, setAuth,persist,setPersist, loginUser, user, logoutUser, backupUser, fetchRefreshToken }}>
             {children}
         </AuthContext.Provider>
     )
