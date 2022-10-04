@@ -1,67 +1,39 @@
-
+import { useState, useEffect } from "react";
 import { NavBar } from "../../components/NavBar/NavBar";
 import '../../styles/form.css'
-import { useRef, useState, useEffect, useContext } from 'react';
-import {useNavigate, useLocation, Link} from 'react-router-dom';
-import useAuth from "../../hooks/useAuth";
-function Login() {
-  //const { setAuth,persist,setPersist } = useAuth()
-  const navigate=useNavigate()
-  const location=useLocation()
 
-  const userRef = useRef();
-  const errRef = useRef();
-  const initialValues = { username: "" , email: "", password: "" };
+
+function Login() {
+  const initialValues = { Name: "",Lastname:"" , email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const [errMsg, setErrMsg] = useState('');
+
   const handleChange = (e) => {
-    const { username, value } = e.target;
-    setFormValues({ ...formValues, [username]: value });
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      // const response = await axios.post(LOGIN_URL,
-      //     JSON.stringify({ username, password }),
-      //     {
-      //         headers: { 'Content-Type': 'application/json' },
-      //         withCredentials: true
-      //     }
-      // );
-    
-    //  const accessToken = response?.data?.accessToken;
-      // setAuth({  Name,  password, accessToken });
-      // localStorage.setItem("access", accessToken);
-      // setUser('');
-      // setPwd('');
-      // navigate(from,{replace:true})
-  } catch (err) {
-      if (!err?.response) {
-          setErrMsg('No Server Response');
-      } else if (err.response?.status === 400) {
-          setErrMsg('Missing Username or Password');
-      } else if (err.response?.status === 401) {
-          setErrMsg('Unauthorized');
-      } else {
-          setErrMsg('Login Failed');
-      }
-      errRef.current.focus();
-  }
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
 
-
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+       // TODO Submit
+    }
+  }, [formErrors]);
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.username) {
-      errors.username = "Name is required!";
+    if (!values.Name) {
+      errors.Name = "Name is required!";
     }
-
+    if (!values.Lastname) {
+        errors.Lastname = "lastName is required!";
+      }
     if (!values.email) {
       errors.email = "Email is required!";
     } else if (!regex.test(values.email)) {
@@ -95,11 +67,11 @@ function Login() {
               type="text"
               name="Name"
               placeholder="Name"
-              value={formValues.username}
+              value={formValues.Name}
               onChange={handleChange}
             />
           </div>
-          <p>{formErrors.username}</p>
+          <p>{formErrors.Name}</p>
           
           <div className="field">
             <label>Email</label>
