@@ -2,15 +2,19 @@ import { useState, useEffect,useRef } from "react";
 import { NavBar } from "../../components/NavBar/NavBar";
 import '../../styles/form.css'
 import { useNavigate ,Link} from "react-router-dom";
-
-import axios from "axios";
+import useAuth from '../../hooks/useAuth';
+import axios from "../../api/axios";
 function Register() {
   const LOGIN_URL = '/http://127.0.0.1:8000/';
+const  API_URL='http://127.0.0.1:8000/api/register'
+const { setAuth,persist,setPersist } = useAuth()
+
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [formValues, setFormValues] = useState(user,email,password);
+  const [success, setSuccess] = useState(false);
+  //const [formValues, setFormValues] = useState(user,email,password);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const userRef = useRef();
@@ -20,17 +24,18 @@ function Register() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      const response = await LOGIN_URL.post('aqui se coloca la url',
-          JSON.stringify({ formValues }),
+      const response = await axios.post('/api/register',
+          JSON.stringify({ user,email,password }),
           {
               headers: { 'Content-Type': 'application/json' },
               withCredentials: true
           }
       );
       console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response));
+      setAuth({ user,  password, });
+       localStorage.setItem("access",);
      
-      // setAuth({ formValues });
       setUser('');
       setPassword('');
       setEmail('');
@@ -45,19 +50,14 @@ function Register() {
       } else {
           setErrMsg('Login Failed');
       }
-      errRef.current.focus();
+     // errRef.current.focus();
   }
-    setFormErrors(validate(formValues));
+    setFormErrors(validate(user,email,password));
     setIsSubmit(true);
   };
  
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-       // TODO Submit
-    }
-  }, [formErrors]);
-  
+
   const validate = () => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -79,7 +79,7 @@ function Register() {
     return errors;
 
   };
-
+  
   return (
     <>
     <NavBar></NavBar>

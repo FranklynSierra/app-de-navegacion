@@ -14,6 +14,13 @@ export default function ForgotPassword() {
     e.preventDefault();
     
     try {
+      const response = await LOGIN_URL.put('/api/register',
+      JSON.stringify({ formValues }),
+      {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
+      }
+  );
       setMessage('')
       setError('')
       setLoading(true)

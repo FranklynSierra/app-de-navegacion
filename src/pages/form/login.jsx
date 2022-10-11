@@ -1,16 +1,18 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect,useRef, useContext } from "react";
 import { NavBar } from "../../components/NavBar/NavBar";
 import '../../styles/form.css'
 import { useNavigate ,Link} from "react-router-dom";
-
+import useAuth from "../../hooks/useAuth";
+import { set } from "react-hook-form";
 
 function Login() {
   const LOGIN_URL = '/http://127.0.0.1:8000/';
   const [user, setUser] = useState('');
+  const {setAuth,loginUser} =useAuth()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [formValues, setFormValues] = useState(user,email,password);
+  const [succes, setSucces] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const userRef = useRef();
@@ -19,46 +21,28 @@ function Login() {
   const  navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
-    try {
-      const response = await LOGIN_URL.post('/api/login',
-          JSON.stringify({ formValues }),
-          {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: true
-          }
-      );
-      console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
-     
-      // setAuth({ formValues });
-      setUser('');
-      setPassword('');
-      setEmail('');
-      navigate('/navigate');
-  } catch (err) {
-      if (!err?.response) {
-          setErrMsg('No Server Response');
-      } else if (err.response?.status === 400) {
-          setErrMsg('Missing Username or Password');
-      } else if (err.response?.status === 401) {
-          setErrMsg('Unauthorized');
-      } else {
-          setErrMsg('Login Failed');
-      }
-      // errRef.current.focus();
-  }
 
-    setFormErrors(validate(formValues));
+     const responseUser = await loginUser({ user, password });
+    if(setFormErrors(validate(user,email,password))){
+
+    
+        if(responseUser != 401){
+            alert('user logued')
+            setAuth({user,password,})
+            setUser('')
+            setPassword('')
+            setEmail('')
+            navigate('/');
+            setFormErrors(validate(user,email,password));
+            
+        }
+      }
+   
     setIsSubmit(true);
   };
  
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-       // TODO Submit
-    }
-  }, [formErrors]);
-  
+
   const validate = () => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -83,7 +67,11 @@ function Login() {
 
   return (
     <>
+    
     <NavBar></NavBar>
+    {succes?(
+      <Link to='/'>aqui</Link>
+    ):(
     <div className="container">
   
       <form onSubmit={handleSubmit}>
@@ -146,6 +134,7 @@ function Login() {
                </span>
           </p>
     </div>
+    )}
     </>
   );
 }
