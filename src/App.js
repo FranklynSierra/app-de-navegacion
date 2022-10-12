@@ -6,6 +6,7 @@ import Register from './pages/form/register';
 import Login from './pages/form/login';
 import Navigation from './pages/navigation/navigation';
 import PageNotFound from './pages/404/pageNotFound';
+import PersistLogin from './components/PersistLogin';
 import RequireAuth from './components/RequireAuth';
 import { AuthProvider } from './context/authContext';
 function App() {
@@ -20,10 +21,13 @@ function App() {
        <Route path='/'element={<Main/>}></Route>
        <Route path='/register'element={<Register/>}></Route>
        <Route path='/login'element={<Login/>}></Route>
-      <Route element={<RequireAuth/>}>
+       <Route element={<PersistLogin/>}>
+   
+       <Route element={<RequireAuth/>}>
        <Route path='/navigate'element={<Navigation/>}></Route>
       </Route>
-      
+      </Route>
+     
        <Route path='/routes'element={<Navigation/>}></Route>
 
        <Route path='*'element={<PageNotFound/>}></Route>

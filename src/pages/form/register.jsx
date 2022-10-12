@@ -6,8 +6,8 @@ import useAuth from '../../hooks/useAuth';
 import axios from "../../api/axios";
 function Register() {
   const LOGIN_URL = '/http://127.0.0.1:8000/';
-const  API_URL='http://127.0.0.1:8000/api/register'
-const { setAuth,persist,setPersist } = useAuth()
+const  API_URL='http://127.0.0.1:8000/register'
+const { setAuth } = useAuth()
 
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +28,9 @@ const { setAuth,persist,setPersist } = useAuth()
           JSON.stringify({ user,email,password }),
           {
               headers: { 'Content-Type': 'application/json' },
-              withCredentials: true
+              // withCredentials: true,
+              // // mode: 'cors',
+              // credentials: 'include',
           }
       );
       console.log(JSON.stringify(response?.data));

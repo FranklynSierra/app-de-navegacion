@@ -18,11 +18,12 @@ export const AuthProvider = ({ children }) => {
 
     const loginUser = async ({user, password}) => {
         try {
-            const responseUser = await fetch(`${API_URL}/api/login`, {
+            const responseUser = await fetch(`${API_URL}/login`, {
                 method: 'POST',
                 // Se debe desplegar primero la aplicacion para poder dar credentials                
                 credentials: 'include',
                  withCredentials: true,
+                 mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -46,8 +47,9 @@ export const AuthProvider = ({ children }) => {
 
     const logoutUser = async () => {
         try {
-            const response = await fetch(`${API_URL}/api/logout`, {
+            const response = await fetch(`${API_URL}/logout`, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json'
                 }
