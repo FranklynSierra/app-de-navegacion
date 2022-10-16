@@ -22,20 +22,23 @@ class AutocompleteDirectionsHandler {
       destinationInput.current,
       { fields: ["place_id"] }
     );
-
+    
+    google.maps.event.clearInstanceListeners(originAutocomplete);
+    google.maps.event.clearInstanceListeners(destinationAutocomplete);
     this.setupPlaceChangedListener(originAutocomplete, "ORIG");
     this.setupPlaceChangedListener(destinationAutocomplete, "DEST");
-
   }
+
 
   setupPlaceChangedListener(autocomplete, mode) {
     autocomplete.bindTo("bounds", this.map);
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
+      console.log("place " + mode)
 
       if (!place.place_id) {
-        window.alert("Please select an option from the dropdown list.");
+        console.log("Please select an option from the dropdown list.");
         return;
       }
 
@@ -55,6 +58,7 @@ class AutocompleteDirectionsHandler {
       console.log("no valid route",this.originPlaceId,this.destinationPlaceId);
       return;
     }
+
     console.log("valid route",this.originPlaceId,this.destinationPlaceId);
 
     const me = this;
@@ -68,8 +72,12 @@ class AutocompleteDirectionsHandler {
       (response, status) => {
         
         if (status === "OK") {
+          const {originPlaceId, destinationPlaceId } = me
           me.directionsRenderer.setDirections(response);
-          me.callback(response)
+          me.callback({
+            response, 
+            location: {originPlaceId, destinationPlaceId}
+          })
         } else {
           window.alert("Directions request failed due to " + status);
         }

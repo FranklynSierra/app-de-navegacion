@@ -1,25 +1,37 @@
 import { Loader } from "@googlemaps/js-api-loader";
-import { useState, useRef } from "react";
-import initMap from "./maps";
+import { useRef, useEffect, useState } from "react";
+import { emittedRoute} from "../events/route"
+import { routeDefault } from "./utils";
+import initMap from "../service/maps";
 
 function useMaps(){
-    const [distance, setDistance]  = useState(0)
+    const [route, setRoute] =  useState(routeDefault)    
     const mapRef = useRef(null)
     const origenRef = useRef(null)
     const destineRef = useRef(null)
+
+    useEffect(()=> {init()}, [])
 
     const loader = new Loader({
         apiKey: "AIzaSyCoPiXZdDvICYe7B9IdOCaHzhO6ecTlErw",
         version: "weekly",
         libraries: ["places"],
-      });
+    });
 
-    const getRoute = ({routes}) => {
+    const getRoute = ({response: {routes}, location}) => {
         if(routes.length > 0 ){
-            const [route] = routes
-            const km = parseFloat(route.legs[0].distance.text.split(" ")[0])
-            console.log('route',km)
-            setDistance(km)
+            const {distance, duration}  = routes[0].legs[0]
+
+            const routeCurrent = {
+                distance: distance.value,
+                duration: duration.text,
+                origen: location.originPlaceId,
+                destine: location.destinationPlaceId
+            }
+
+            setRoute(routeCurrent)
+            
+            emittedRoute(routeCurrent)
         }
     }
 
@@ -34,7 +46,7 @@ function useMaps(){
         }
     }
 
-    return {distance, init, refs : {mapRef, origenRef, destineRef}}
+    return {route, refs : {mapRef, origenRef, destineRef}}
 }
 
 export default useMaps

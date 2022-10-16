@@ -1,0 +1,1 @@
+export const rateDefault = 0.75;  
