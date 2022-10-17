@@ -3,16 +3,16 @@
 .container-navigation {
     margin: 0;
     width: 100%;
-    height: calc(100vh - 56px);
-    padding: 4rem;
+    min-height: calc(100vh - 56px);
+    padding: 2rem 4rem;
     box-sizing: border-box;
     background-color: var( --background-color, #161717 );
 }
 
-.maps {
+.map {
     background-color: azure;
     border-radius: 10px;
-    min-height: 10rem;
+    min-height: 15rem;
 }
 
 .content {
@@ -21,10 +21,10 @@
     align-items: center;
     justify-content: space-between;
     color: azure;
-    padding: 2rem 2rem 0 2rem;
+    padding-top: 2rem;
 }
 
-.content form {
+.body {
     width: 100%;
 }
 
@@ -43,4 +43,9 @@
 }
 .rate > p:nth-child(2){
     font-size: .9rem;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
 }
