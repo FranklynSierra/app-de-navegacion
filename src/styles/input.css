@@ -7,7 +7,7 @@
     color: azure;
 }
 
-.form-group label  span {
+.form-group > label > span {
     text-align: left;
     width: 80%;
     font-weight: 500 ;
@@ -17,7 +17,7 @@
 .form-control {
     background-color: #212121;
     color: azure;
-    border: none;
+    border: solid 3px #212121;
     padding: 0.5rem;
     border-radius: 5px;
     transition: background-color 0.3s, border 0.3s;
@@ -34,4 +34,21 @@
 .form-group p {
     margin-top: .4rem;
     text-align: left;
+}
+
+.input-group .input-group-text {
+    background-color: #212121;
+    color: azure;
+    border: solid 3px #212121;
+}
+
+.input-group img{
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

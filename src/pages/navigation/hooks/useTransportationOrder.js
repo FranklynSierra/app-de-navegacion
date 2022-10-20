@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { object, string, number} from 'yup'; 
-import { requestDefault} from './utils'
+import { requestDefault, routeDefault} from './utils'
 import { rateDefault} from '../utils'
 import { useAlert  } from 'react-alert'
-import { emitter} from '../events/route'
+import { emitter} from '../events/routeEvent'
 
 let orderSchema = object({
     origen: string().required("Required location origen"),
@@ -15,13 +15,31 @@ let orderSchema = object({
 
 function useTransportationOrder () {
     const [isLoading, setIsLoading] = useState(false)
+
     const [request, setRequest] = useState(requestDefault)
+
+    const [extraData, setExtraData] = useState({duration: "0 min"})
     const alert = useAlert()
 
     useEffect(() => {
-      emitter.on('route', (route) => {
-        const price = (route.distance * rateDefault)/1000
-        setRequest({...request, ...route, price}) 
+      emitter.on('route', ({routes, request}) => {
+
+        if(routes.length > 0){
+            const {distance: {value}, duration: {text}, end_location} = routes[0].legs[0]
+
+            const {start_address, end_address} = routes[0].legs[0]
+
+            const price = (value * rateDefault)/1000
+
+            setRequest({...request, 
+                origen: start_address,
+                destine: end_address, 
+                distance: value, 
+                price}) 
+
+            setExtraData({duration: text}) 
+        }
+
       })
     
       return () => {
@@ -33,6 +51,7 @@ function useTransportationOrder () {
         e.preventDefault()
         try {
             setIsLoading(true)
+            
             const requestValidate = await orderSchema.validate({...request})
 
             // TODO FETCH
@@ -49,7 +68,7 @@ function useTransportationOrder () {
         }
     }
 
-    return {request, handleSubmit, isLoading}
+    return {request, extraData, handleSubmit, isLoading}
 }
 
 
