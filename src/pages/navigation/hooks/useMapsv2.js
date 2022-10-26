@@ -1,82 +1,74 @@
 import { useRef, useContext, useEffect, useState } from "react";
-import { GoogleContext, MapsContext } from "../index";
+import { GoogleContext, MapsContext } from "../context";
 import { geoPositionCurrent, positionDefault } from "./utils";
-import {emitter} from "../events/autocompleteEvent"
+import {emitter} from "../events"
 import DirectionService from "../service/DirectionService";
 
 function useMaps() {
-  const google = useContext(GoogleContext);
+    const google = useContext(GoogleContext);
 
-  const { setMaps } = useContext(MapsContext);
+    const { setMaps } = useContext(MapsContext);
 
-  const mapRef = useRef(null);
+    const mapRef = useRef(null);
 
-  const [service, setService] = useState(null)
+    const [service, setService] = useState(null)
 
-  let origen, destine;
+    let origen = null, destine = null;
 
-  useEffect(() => {
-    if (google) {
-      let marker, maps, service;
+    useEffect(() => {
+        if (google) {
+        let marker, maps, service;
 
-      maps = new google.maps.Map(mapRef.current, {
-        zoom: 16,
-        center: positionDefault,
-      });
+        maps = new google.maps.Map(mapRef.current, {
+            zoom: 16,
+            center: positionDefault,
+        });
 
-      marker = new google.maps.Marker({
-        position: positionDefault,
-        maps,
-        title: "posicion Inicial",
-      });
+        marker = new google.maps.Marker({
+            position: positionDefault,
+            maps,
+            title: "posicion Inicial",
+        });
 
-      geoPositionCurrent((position) => {
-        marker.setPosition(position);
-        maps.setCenter(position);
-      });
+        geoPositionCurrent((position) => {
+            marker.setPosition(position);
+            maps.setCenter(position);
+        });
 
-      service = new DirectionService(maps, google)
-      setService(service)
-      setMaps(maps);
-    }
-  }, [google]);
+        service = new DirectionService(maps, google)
+        setService(service)
+        setMaps(maps);
+        }
+    }, [google]);
 
 
-  const handleAutocomplete = async ({place, mode, extraData: {isOriginCurrent}}) => {
+    const handleAutocomplete = async ({place, mode}) => {
 
-    console.log("comenzando log")
+        if(mode === 'origen'){
+        origen = place
+        }
+        
+        if(mode === 'destine'){
+        destine = place
+        }
 
-    let isOriginCurrentLocal = isOriginCurrent
-
-    if(origen === undefined){
-      isOriginCurrentLocal = true
-    }
-     
-    if(mode === 'origen'){
-      origen = place
-    }
-     
-    if(mode === 'destine'){
-      destine = place
+        service.route(origen, destine)
     }
 
-    service.route(origen, destine, isOriginCurrentLocal)
-  }
+    useEffect(() => {
 
-  useEffect(() => {
+        if(service){
+        emitter.on('autocomplete', handleAutocomplete)
+        }
+        
+        return () => {
+        emitter.removeListener('autocomplete')
+        }
 
-    if(service){
-      emitter.on('autocomplete', handleAutocomplete)
-    }
-    
-    return () => {
-      emitter.removeListener('autocomplete')
-    }
-
-  }, [service])
+    }, [service])
   
 
-  return { mapRef };
+    return { mapRef };
 }
 
 export default useMaps;

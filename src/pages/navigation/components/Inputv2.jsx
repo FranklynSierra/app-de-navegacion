@@ -1,18 +1,38 @@
 import React from "react";
-import useAutocomplete from "../hooks/useAutocomplete";
 
-const Input = ({ label, mode, children, ...props }) => {
-  
-  const { inputRef } = useAutocomplete(mode);
+const Input = React.forwardRef(
+  ({ label, placeholder, icon, onClickIcon, ...props }, ref) => {
 
-  return (
-    <div className="form-group">
-      <label>
-        <span>{label}</span>
-        <input className="form-control" {...props} ref={inputRef} />
-      </label>
-    </div>
-  );
-};
+    return (
+        <div className="form-group">
+
+            <label>
+
+                <span>{label}</span>
+
+                <div className="input-group">
+                    <input
+                        type="search"
+                        className="form-control"
+                        {...props}
+                        ref={ref}
+                        placeholder={placeholder}
+                    />
+
+                    <div
+                        className="input-group-text cursor-pointer"
+                        onClick={onClickIcon}
+                    >
+                        <img src={icon} />
+        
+                    </div>
+
+                </div>
+
+            </label>
+      </div>
+    );
+  }
+);
 
 export default Input;

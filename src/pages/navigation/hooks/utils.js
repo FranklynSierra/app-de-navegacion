@@ -18,6 +18,11 @@ export const dataMapsDefault = {
     destine: ""
 }
 
+export const extraDataDefault = {
+    addressInput: '',
+    isOriginCurrent: true
+}
+
 export const positionDefault = { lat: 10.159585, lng: -67.729032 };
 
 export const geoPositionCurrent  = (callback) => {

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { object, string, number} from 'yup'; 
-import { requestDefault, routeDefault} from './utils'
+import { requestDefault} from './utils'
 import { rateDefault} from '../utils'
 import { useAlert  } from 'react-alert'
-import { emitter} from '../events/routeEvent'
+import { emitter} from '../events'
 
 let orderSchema = object({
     origen: string().required("Required location origen"),
@@ -19,13 +19,14 @@ function useTransportationOrder () {
     const [request, setRequest] = useState(requestDefault)
 
     const [extraData, setExtraData] = useState({duration: "0 min"})
+
     const alert = useAlert()
 
     useEffect(() => {
       emitter.on('route', ({routes, request}) => {
 
         if(routes.length > 0){
-            const {distance: {value}, duration: {text}, end_location} = routes[0].legs[0]
+            const {distance: {value}, duration: {text}} = routes[0].legs[0]
 
             const {start_address, end_address} = routes[0].legs[0]
 

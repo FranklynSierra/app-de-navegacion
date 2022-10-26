@@ -1,52 +1,50 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { GoogleContext, MapsContext } from "..";
-import { emittedAutocomplete } from "../events/autocompleteEvent";
+import { GoogleContext, MapsContext } from "../context";
+import { emittedAutocomplete } from "../events";
+import { extraDataDefault } from "./utils";
 
-function useAutocomplete(mode, extraDataDefault = {}) {
-  let autocomplete;
+function useAutocomplete(mode) {
+    let autocomplete;
 
-  const inputRef = useRef(null);
+    const inputRef = useRef(null);
 
-  const { maps } = useContext(MapsContext);
+    const { maps } = useContext(MapsContext);
 
-  const google = useContext(GoogleContext);
+    const google = useContext(GoogleContext);
 
-  let extraData = {}
+    useEffect(() => {
+        if (google && maps) {
+        autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+            fields: ["place_id"],
+        });
 
-  useEffect(() => {
-    if (google && maps) {
-      autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
-        fields: ["place_id"],
-      });
+        setupPlaceChangedListener();
+        }
+    }, [google, maps]);
 
-      setupPlaceChangedListener();
-    }
-  }, [google, maps]);
+    const handleListener = () => {
+        const place = autocomplete.getPlace();
 
-  const setupPlaceChangedListener = () => {
-    google.maps.event.clearInstanceListeners(inputRef.current);
+        if (!place.place_id) {
+            console.log("Please select an option from the dropdown list.");
+            return;
+        }
 
-    autocomplete.bindTo("bounds", maps);
+        emittedAutocomplete({
+            place: { value: place.place_id, text: inputRef.current.value },
+            mode
+        });
+    };
 
-    autocomplete.addListener("place_changed", () => {
-      const place = autocomplete.getPlace();
+    const setupPlaceChangedListener = () => {
+        google.maps.event.clearInstanceListeners(inputRef.current);
 
-      if (!place.place_id) {
-        console.log("Please select an option from the dropdown list.");
-        return;
-      }
+        autocomplete.bindTo("bounds", maps);
 
-      emittedAutocomplete({
-        place: place.place_id,
-        mode,
-        extraData,
-      });
-    });
-  };
+        autocomplete.addListener("place_changed", handleListener);
+    };
 
-  const setExtraData = (data) => extraData = data
-
-  return { inputRef, setExtraData };
+    return { inputRef };
 }
 
 export default useAutocomplete;

@@ -16,12 +16,14 @@
 }
 
 .content {
+    position: relative;
     display: flex;    
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     color: azure;
     padding-top: 2rem;
+    overflow: hidden;
 }
 
 .body {
@@ -48,4 +50,75 @@
 .loading {
     display: flex;
     justify-content: center;
+}
+
+/** Destination history*/
+
+.destination-history{
+    position: absolute;
+    z-index: 15;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    width: 100%;
+    transform: translateY(100%);
+    transition: all 1s;
+}
+
+.destination-history .list-group{
+    min-height: calc(100% - 43px);
+}
+
+.dark-shadow {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background-color: #1617179d;
+    transform: translateY(100vh);
+    transition: all 1s;
+    transition-delay: 1s;
+}
+
+
+.animation-up  {
+    transform: translateY(0);
+}
+
+.destination-history .title {
+    font-size: 18px;
+}
+
+.destination-history .icon{
+    font-size: 18px;
+}
+
+.information p {
+    margin: 0;
+}
+
+.information .name {
+    font-size: 15px;
+    max-width: 300px;
+}
+.information .address {
+    font-size: 13px;
+    max-width: 300px;
+}
+
+.circle {
+    background-color: #EDE6E6;
+    height: 40px;
+    width: 40px;
+    flex-basis: 40px;
+}
+
+.circle .icon{
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+}
+
+.list-group-item:hover{
+    background-color: #f8f9fa;
 }

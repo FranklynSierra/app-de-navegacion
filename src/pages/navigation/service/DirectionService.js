@@ -1,4 +1,4 @@
-import {emittedRoute} from '../events/routeEvent'
+import {emittedRoute} from '../events'
 
 class DirectionService {
     constructor(map, google) {
@@ -10,31 +10,40 @@ class DirectionService {
         this.directionsRenderer.setMap(map);
     }
 
-    chooseOriginPlace(originPlace, isOriginCurrent) {
-        return isOriginCurrent ? this.map.getCenter() : { placeId: originPlace };
+    chooseOriginPlace(originPlace) {
+
+        return originPlace === null ? this.map.getCenter() : { placeId: originPlace.value };
     }
 
-    route(originPlace, destinationPlace, isOriginCurrent = false) {
+    createRequest(originPlace, destinationPlace){
+        return {
+            origin: this.chooseOriginPlace(originPlace),
+            destination: { placeId: destinationPlace.value },
+            travelMode: this.travelMode,
+        }
+    }
+
+    route(originPlace, destinationPlace) {
+
         if (!destinationPlace) {
             console.log("no valid route", originPlace, destinationPlace);
             return;
         }
 
-        console.log(originPlace, destinationPlace, isOriginCurrent);
-
+        console.log("procesando")
+        
         const me = this;
 
-        this.directionsService.route(
-            {
-                origin: this.chooseOriginPlace(originPlace, isOriginCurrent),
-                destination: { placeId: destinationPlace },
-                travelMode: this.travelMode,
-            },
+        const request = this.createRequest(originPlace, destinationPlace)
+
+        this.directionsService.route( request,
+
             (response, status) => {
+
                 if (status === "OK") {
                     me.directionsRenderer.setDirections(response);
 
-                    emittedRoute(response)
+                    emittedRoute({...response, destine: destinationPlace})
                     
                 } else {
                     window.alert("Directions request failed due to " + status);
