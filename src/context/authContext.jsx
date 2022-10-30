@@ -11,12 +11,13 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState()
   
     const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('persist')) || false);
+    const [ email,setEmail ] = useState(JSON.parse(localStorage.getItem('persist')) || false);
     const [ auth, setAuth ] = useState({});
     const [ persist, setPersist ] = useState(JSON.parse(localStorage.getItem('persist')) || false);
 
     let backupUser;
 
-    const loginUser = async ({user, password}) => {
+    const loginUser = async ({email, password}) => {
         try {
             const responseUser = await fetch(`${API_URL}/login`, {
                 method: 'POST',
@@ -27,14 +28,14 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({  password ,email}),
+                body: JSON.stringify({ email, password }),
             });
 
             if(responseUser.status != 401){
-                backupUser = { password ,email};
+                backupUser = { email, password };
                 const userLoged = await responseUser.json();
              
-                setUser(userLoged)
+                setEmail(userLoged)
                 localStorage.setItem('persist', JSON.stringify(userLoged))
                 return userLoged
             } else {
