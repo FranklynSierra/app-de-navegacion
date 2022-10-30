@@ -23,7 +23,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const responseUser = await fetch(`${API_URL}/login`, {
+      const responseUser = await fetch(`${LOGIN_URL}/login`, {
           method: 'POST',
           // Se debe desplegar primero la aplicacion para poder dar credentials                
           credentials: 'include',
