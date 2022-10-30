@@ -4,9 +4,9 @@ import '../../styles/form.css'
 import { useNavigate ,Link} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { set } from "react-hook-form";
-
+import axios from "../../api/axios";
 function Login() {
-  const LOGIN_URL = '/http://127.0.0.1:8000/api';
+
 
   const {setAuth,loginUser} =useAuth()
   const [email, setEmail] = useState('');
@@ -23,8 +23,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const responseUser = await fetch(`${LOGIN_URL}/login`, {
-          method: 'POST',
+      const responseUser = await axios.post(`/api/login`, {
           // Se debe desplegar primero la aplicacion para poder dar credentials                
           credentials: 'include',
            withCredentials: true,
