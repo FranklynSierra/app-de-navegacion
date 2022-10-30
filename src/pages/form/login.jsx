@@ -33,22 +33,10 @@ function Login() {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email, password }),
+
       });
 
-      if(responseUser.status != 401){
-          backupUser = { email, password };
-          const userLoged = await responseUser.json();
-       
-          setEmail(userLoged)
-          localStorage.setItem('persist', JSON.stringify(userLoged))
-          return userLoged
-      } else {
-          return responseUser.status;
-      }            
-  } catch (error) {
-      alert(error)
-  }
-    if(setFormErrors(validate(email,password))){
+      if(setFormErrors(validate(email,password))){
 
     
         if(responseUser != 401){
@@ -63,6 +51,11 @@ function Login() {
         }
       }
    
+              
+  } catch (error) {
+      alert(error)
+  }
+  
     setIsSubmit(true);
   };
  
