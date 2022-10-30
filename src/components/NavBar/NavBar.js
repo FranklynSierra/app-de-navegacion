@@ -15,12 +15,7 @@ export const NavBar = () => {
           <li className="nav-item">
             <Link  className="nav-link" to='/'>Inicio</Link>
           </li>
-          <li className="nav-item">
-           <Link to='/' className="nav-link">Porque Elejirnos</Link> 
-          </li>
-          <li className="nav-item">
-           <Link className="nav-link" to='/'> Mas opciones</Link>
-          </li>
+         
         </ul>
         <div className="d-flex">
         <Link to='/login' className='me-2'> <button className="btn btn-outline-success">Login</button> </Link>          
