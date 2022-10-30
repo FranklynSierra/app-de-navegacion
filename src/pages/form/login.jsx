@@ -18,10 +18,36 @@ function Login() {
 
 
   const  navigate=useNavigate()
+  let backupUser;
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-     const responseUser = await loginUser({ password,email });
+    try {
+      const responseUser = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          // Se debe desplegar primero la aplicacion para poder dar credentials                
+          credentials: 'include',
+           withCredentials: true,
+           mode: 'no-cors',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+      });
+
+      if(responseUser.status != 401){
+          backupUser = { email, password };
+          const userLoged = await responseUser.json();
+       
+          setEmail(userLoged)
+          localStorage.setItem('persist', JSON.stringify(userLoged))
+          return userLoged
+      } else {
+          return responseUser.status;
+      }            
+  } catch (error) {
+      alert(error)
+  }
     if(setFormErrors(validate(email,password))){
 
     
