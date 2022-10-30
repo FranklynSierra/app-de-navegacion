@@ -7,33 +7,32 @@ import { set } from "react-hook-form";
 
 function Login() {
   const LOGIN_URL = '/http://127.0.0.1:8000/';
-  const [user, setUser] = useState('');
+
   const {setAuth,loginUser} =useAuth()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errMsg, setErrMsg] = useState('');
+  
   const [succes, setSucces] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const userRef = useRef();
-  const errRef = useRef();
+
 
   const  navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
 
-     const responseUser = await loginUser({ user, password });
-    if(setFormErrors(validate(user,email,password))){
+     const responseUser = await loginUser({ password,email });
+    if(setFormErrors(validate(email,password))){
 
     
         if(responseUser != 401){
             alert('user logued')
-            setAuth({user,password,})
-            setUser('')
+            setAuth({password,email})
+           
             setPassword('')
             setEmail('')
             navigate('/');
-            setFormErrors(validate(user,email,password));
+            setFormErrors(validate(email,password));
             
         }
       }
@@ -46,9 +45,7 @@ function Login() {
   const validate = () => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!user) {
-      errors.user= "Name is required!";
-    } if (!email) {
+  if (!email) {
       errors.email = "Email is required!";
     } else if (!regex.test(email)) {
       errors.email = "This is not a valid email format!";
@@ -79,19 +76,6 @@ function Login() {
         <div className="ui divider"></div>
         <div className="form-group">
         <div className="row">
-         <div className="">
-            <label>Name</label>
-            <input
-          
-             className="text-light form-control input"
-              type="text"
-              name="Name"
-              placeholder="Name"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
-            />
-          </div>
-          <p>{formErrors.user}</p>
           
           <div className="field">
             <label>Email</label>

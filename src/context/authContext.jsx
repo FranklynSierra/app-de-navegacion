@@ -27,11 +27,11 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ user, password }),
+                body: JSON.stringify({  password ,email}),
             });
 
             if(responseUser.status != 401){
-                backupUser = { user, password };
+                backupUser = { password ,email};
                 const userLoged = await responseUser.json();
              
                 setUser(userLoged)
