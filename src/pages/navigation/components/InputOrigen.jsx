@@ -18,8 +18,12 @@ const InputOrigen = () => {
 
         if (!isOriginCurrent) {
 
+            inputRef.current.value = ""
+            
             emittedAutocomplete({place: null, mode});
+
             setOriginCurrent(true)
+
             return;
         }
 
@@ -34,6 +38,7 @@ const InputOrigen = () => {
         disabled={isOriginCurrent}
         ref={inputRef}
         icon="https://img.icons8.com/ios/50/FFFFFF/search-more.png"
+        iconMap= "https://img.icons8.com/windows/32/9d9d9d/circle.png"
         onClickIcon={ handleClick}
     />
   );

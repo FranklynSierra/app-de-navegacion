@@ -23,9 +23,11 @@ function useTransportationOrder () {
     const alert = useAlert()
 
     useEffect(() => {
-      emitter.on('route', ({routes, request}) => {
+      emitter.on('route', ({routes}) => {
 
         if(routes.length > 0){
+          
+
             const {distance: {value}, duration: {text}} = routes[0].legs[0]
 
             const {start_address, end_address} = routes[0].legs[0]
@@ -48,6 +50,18 @@ function useTransportationOrder () {
       }
     }, [])
     
+    useEffect(() => {
+      emitter.on('route-failed', (message) => {
+
+        alert.show(message, {type: 'error'})
+
+      })
+    
+      return () => {
+         emitter.removeListener('route-failed')
+      }
+    }, [])
+    
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -56,15 +70,17 @@ function useTransportationOrder () {
             const requestValidate = await orderSchema.validate({...request})
 
             // TODO FETCH
-            alert.show('Process completed!')
+            alert.show('Process completed!', {type: "success"})
+            setRequest(requestDefault)
             setIsLoading(false)
     
         } catch (error) {
+
             if( error?.name === 'ValidationError'){
                 setIsLoading(false)
-                alert.show(error.errors[0])
+                alert.show(error.errors[0], {type: 'error'})
             }else{
-                console.log(error.name)
+                alert.show(error.name, {type: 'error'})
             }
         }
     }

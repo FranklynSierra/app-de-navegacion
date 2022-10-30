@@ -30,6 +30,7 @@ export const geoPositionCurrent  = (callback) => {
     if (navigator.geolocation) {
 
         navigator.geolocation.watchPosition((position) => {
+
             const { latitude, longitude } = position.coords;
 
             callback({ lat: latitude, lng: longitude });
@@ -50,7 +51,8 @@ export const getCurrentPosition = () => {
 
             const {latitude, longitude} = pos.coords
 
-            resolve({lat : latitude, lng: longitude})
+            resolve({lat: latitude, lng: longitude})
+
         }, (err) => console.log(err), {
             timeout: 5000,
             maximumAge: Infinity
