@@ -72,6 +72,7 @@ function useTransportationOrder () {
             // TODO FETCH
             alert.show('Process completed!', {type: "success"})
             setRequest(requestDefault)
+            setExtraData({duration: '0 min'})
             setIsLoading(false)
     
         } catch (error) {
