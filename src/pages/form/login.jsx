@@ -32,12 +32,14 @@ function Login() {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email, password }),
+        
 
       });
-
+        
+      navigate('/navigate');
       if(setFormErrors(validate(email,password))){
 
-    
+        navigate('/navigate');
         if(responseUser != 401){
             alert('user logued')
             setAuth({password,email})
