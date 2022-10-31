@@ -40,6 +40,7 @@ const InputDestine = () => {
             placeholder={isDestineSelected? destine : placeholder}
             disabled={isVisibleHistory}
             icon="https://img.icons8.com/external-bearicons-glyph-bearicons/64/FFFFFF/external-Save-social-media-bearicons-glyph-bearicons.png"
+            iconMap= "https://img.icons8.com/ios-filled/50/9d9d9d/marker-o.png"
             onClickIcon={handleClickOpen}
             onFocus={handleFocus}
         />

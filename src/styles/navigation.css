@@ -30,6 +30,18 @@
     width: 100%;
 }
 
+.inputs {
+    position: relative;
+}
+
+.inputs .line {
+    border-right: 3px dashed #d1d5db;
+    position: absolute;
+    top: 2px;
+    left: .7rem;
+    height: 60%;
+}
+
 .text {
     text-align: left;
     margin-bottom: .2rem;
@@ -56,7 +68,7 @@
 
 .destination-history{
     position: absolute;
-    z-index: 15;
+    z-index: 2000;
     bottom: 0;
     left: 0;
     right: 0;

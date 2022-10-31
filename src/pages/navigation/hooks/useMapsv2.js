@@ -7,7 +7,7 @@ import DirectionService from "../service/DirectionService";
 function useMaps() {
     const google = useContext(GoogleContext);
 
-    const { setMaps } = useContext(MapsContext);
+    const { maps, setMaps } = useContext(MapsContext);
 
     const mapRef = useRef(null);
 
@@ -17,30 +17,30 @@ function useMaps() {
 
     useEffect(() => {
         if (google) {
-        let marker, maps, service;
+
+        let maps;
 
         maps = new google.maps.Map(mapRef.current, {
             zoom: 16,
             center: positionDefault,
         });
 
-        marker = new google.maps.Marker({
-            position: positionDefault,
-            maps,
-            title: "posicion Inicial",
-        });
+        setService(new DirectionService(maps, google))
 
-        geoPositionCurrent((position) => {
-            marker.setPosition(position);
-            maps.setCenter(position);
-        });
-
-        service = new DirectionService(maps, google)
-        setService(service)
         setMaps(maps);
+
         }
+
     }, [google]);
 
+    useEffect(() => {
+
+        if(maps){
+
+            geoPositionCurrent((position) => { maps.setCenter(position);});
+        }
+
+    }, [maps])
 
     const handleAutocomplete = async ({place, mode}) => {
 
@@ -58,11 +58,11 @@ function useMaps() {
     useEffect(() => {
 
         if(service){
-        emitter.on('autocomplete', handleAutocomplete)
+            emitter.on('autocomplete', handleAutocomplete)
         }
         
         return () => {
-        emitter.removeListener('autocomplete')
+            emitter.removeListener('autocomplete')
         }
 
     }, [service])

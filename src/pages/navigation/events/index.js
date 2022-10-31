@@ -9,3 +9,4 @@ export const emittedRoute = (route) => emitter.emit('route', route)
 
 export const emittedDestinationSelected = (destine) => emitter.emit('destine-selected', destine)
 
+export const emittedRouteFailed = (message) => emitter.emit('route-failed', message)

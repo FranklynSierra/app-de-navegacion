@@ -2,7 +2,7 @@ import React from 'react'
 
 const InformationService = ({rateDefault}) => {
   return (
-    <div className="rate  mt-2">
+    <div className="rate  mt-2 mb-4">
         <p className="text">Rate per km is: {rateDefault}$</p>
         <p className="text">
             The rate is subject to cost variation due to holiday prices,

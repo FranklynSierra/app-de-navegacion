@@ -1,16 +1,19 @@
 import React from "react";
 
 const Input = React.forwardRef(
-  ({ label, placeholder, icon, onClickIcon, ...props }, ref) => {
+  ({ label, placeholder, icon, iconMap, onClickIcon, ...props }, ref) => {
 
     return (
-        <div className="form-group">
-
+        <div className="form-group mb-2">
             <label>
-
-                <span>{label}</span>
-
-                <div className="input-group">
+                <div className="row">
+                    <div className="col-1">
+                        <img className='icon' src={iconMap} alt="" />
+                    </div>                    
+                    <span className="col-11">{label}</span>
+                </div>
+                
+                <div className="input-group mt-2">
                     <input
                         type="search"
                         className="form-control"

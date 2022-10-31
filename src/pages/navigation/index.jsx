@@ -30,12 +30,14 @@ const Navigation = () => {
                 <Session user={"Cristhian Perez"} />
             </NavBar>
 
-            <main className="row container-navigation">
-                <Maps className="col-12 col-md-7 map" />
+            <main className="row container-navigation pb-0">
+                <Maps className="col-12 col-md-6 map mb-4" />
 
-                <div className="col-12 col-md-4 offset-md-1 content">
+                <div className="col-12 col-md-5 offset-md-1 content">
                     <div className="body">
+
                         <div className="inputs">
+
                             <InputOrigen />
 
                             <InputDestine />

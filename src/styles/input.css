@@ -1,4 +1,17 @@
 
+.form-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-group .icon {
+    object-fit: cover;
+    width: 26px;
+    height: 26px;
+    background-color: #161717;
+}
+
 .form-group label {
     width: 100%;
     display: flex;
@@ -7,7 +20,7 @@
     color: azure;
 }
 
-.form-group > label > span {
+.form-group  span {
     text-align: left;
     width: 80%;
     font-weight: 500 ;
@@ -51,4 +64,10 @@
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+
+.form-control:disabled {
+    background-color: #212121;
+    cursor: not-allowed;
 }
